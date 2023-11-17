@@ -33,7 +33,7 @@ const Root = () => {
   const scheme = useColorScheme();
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightMode}>
+    <NavigationContainer theme={scheme === 'dark' ? DarkMode : LightMode}>
       <Stack.Navigator>
         <Stack.Screen
           name={SCREENS.HOME}
