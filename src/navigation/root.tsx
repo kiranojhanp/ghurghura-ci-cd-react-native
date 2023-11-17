@@ -1,16 +1,39 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {SCREENS} from '../common/constants';
 import Placeholder from '../screens/Placeholder';
 import home from './home';
+import {useColorScheme} from 'react-native';
+
+const LightMode = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'rgb(255, 45, 85)',
+  },
+};
+
+const DarkMode = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    primary: 'rgb(255, 45, 85)',
+  },
+};
 
 const Stack = createNativeStackNavigator();
 
 const Root = () => {
+  const scheme = useColorScheme();
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightMode}>
       <Stack.Navigator>
         <Stack.Screen
           name={SCREENS.HOME}
