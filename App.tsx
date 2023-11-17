@@ -6,6 +6,7 @@ import {
   NativeStackScreenProps,
   createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type RootStackParamList = {
   Home: undefined;
@@ -64,7 +65,23 @@ function HomeStack(): JSX.Element {
 function Wrapper(): JSX.Element {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName = '';
+            if (route.name === 'HomeStack') {
+              iconName = focused
+                ? 'information-circle'
+                : 'information-circle-outline';
+            } else if (route.name === 'Settings') {
+              iconName = focused ? 'list' : 'list-outline';
+            }
+
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+        })}>
         <Tab.Screen
           name="HomeStack"
           component={HomeStack}
