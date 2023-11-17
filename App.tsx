@@ -25,7 +25,7 @@ function EmptyScreen() {
 
 function Home({navigation}: any) {
   return (
-    <View className="flex-1 items-center justify-center bg-red">
+    <View className="flex-1 items-center justify-center bg-white">
       <Text>Home Screen</Text>
       <Button
         title="Go to Profile"
