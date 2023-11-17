@@ -4,17 +4,17 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-const SCREENS = Object.freeze({
+const SCREENS = {
   HOME: 'HomeScreen',
   PROFILE: 'ProfileScreen',
   SETTINGS: 'SettingsScreen',
-});
+} as const;
 
-const TABS = Object.freeze({
+const TABS = {
   HOME: 'Home',
   FEED: 'Feed',
   NOTIFICATIONS: 'Notifications',
-});
+} as const;
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -25,7 +25,7 @@ function EmptyScreen() {
 
 function Home({navigation}: any) {
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View className="flex-1 items-center justify-center bg-red">
       <Text>Home Screen</Text>
       <Button
         title="Go to Profile"
@@ -53,7 +53,11 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name={SCREENS.HOME} component={Tabs} options={{headerShown: false}} />
+        <Stack.Screen
+          name={SCREENS.HOME}
+          component={Tabs}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name={SCREENS.PROFILE} component={EmptyScreen} />
         <Stack.Screen name={SCREENS.SETTINGS} component={EmptyScreen} />
       </Stack.Navigator>
