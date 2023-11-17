@@ -1,109 +1,64 @@
-import React from 'react';
-import {Button, SafeAreaView, StatusBar, StyleSheet, Text} from 'react-native';
+import * as React from 'react';
+import {Text, View, Button} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {
-  NativeStackScreenProps,
-  createNativeStackNavigator,
-} from '@react-navigation/native-stack';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
-type RootStackParamList = {
-  Home: undefined;
-  Details: {
-    itemId: number;
-    otherParam?: string;
-  };
-};
+const SCREENS = Object.freeze({
+  HOME: 'HomeScreen',
+  PROFILE: 'ProfileScreen',
+  SETTINGS: 'SettingsScreen',
+});
 
-type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
-type DetailsProps = NativeStackScreenProps<RootStackParamList, 'Details'>;
+const TABS = Object.freeze({
+  HOME: 'Home',
+  FEED: 'Feed',
+  NOTIFICATIONS: 'Notifications',
+});
 
-function Home({navigation}: HomeProps): JSX.Element {
-  const test = {itemId: 85};
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.hello}>Hello, World</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details', test)}
-      />
-    </SafeAreaView>
-  );
-}
-
-function Details({route}: DetailsProps) {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.hello}>
-        {route.params.otherParam ?? 'Details page'}
-      </Text>
-    </SafeAreaView>
-  );
-}
-
-function Settings() {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.hello}>Settings!</Text>
-    </SafeAreaView>
-  );
-}
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-function HomeStack(): JSX.Element {
+function EmptyScreen() {
+  return <View />;
+}
+
+function Home({navigation}: any) {
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Details" component={Details} />
-    </Stack.Navigator>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Profile"
+        onPress={() => navigation.navigate(SCREENS.PROFILE)}
+      />
+      <Button
+        title="Go to Settings"
+        onPress={() => navigation.navigate(SCREENS.SETTINGS)}
+      />
+    </View>
   );
 }
 
-function Wrapper(): JSX.Element {
+function Tabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name={TABS.HOME} component={Home} />
+      <Tab.Screen name={TABS.FEED} component={EmptyScreen} />
+      <Tab.Screen name={TABS.NOTIFICATIONS} component={EmptyScreen} />
+    </Tab.Navigator>
+  );
+}
+
+function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName = '';
-            if (route.name === 'HomeStack') {
-              iconName = focused
-                ? 'information-circle'
-                : 'information-circle-outline';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'list' : 'list-outline';
-            }
-
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: 'tomato',
-          tabBarInactiveTintColor: 'gray',
-        })}>
-        <Tab.Screen
-          name="HomeStack"
-          component={HomeStack}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen name="Settings" component={Settings} />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name={SCREENS.HOME} component={Tabs} options={{headerShown: false}} />
+        <Stack.Screen name={SCREENS.PROFILE} component={EmptyScreen} />
+        <Stack.Screen name={SCREENS.SETTINGS} component={EmptyScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  hello: {
-    fontSize: 20,
-    color: 'tomato',
-    textAlign: 'center',
-    margin: 10,
-  },
-});
-
-export default Wrapper;
+export default App;
