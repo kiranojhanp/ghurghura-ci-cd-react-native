@@ -2,10 +2,10 @@ import React from 'react';
 import Analytics from 'appcenter-analytics';
 import {Button, SafeAreaView, StatusBar, StyleSheet, Text} from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 function Home(): JSX.Element {
-   const navigation = useNavigation();
+  const navigation = useNavigation();
 
   const handleEvent = async () => {
     Analytics.trackEvent('make_payment', {Internet: 'Cellular', GPS: 'on'});
@@ -32,12 +32,14 @@ function Details() {
       <Text style={styles.hello}>Details Screen</Text>
       <Button
         title="Go to Details... again"
-        onPress={() => navigation.push('Details')}
+        onPress={() =>
+          navigation.push('Details', {
+            itemId: 86,
+            otherParam: 'lorem ipsum',
+          })
+        }
       />
-      <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
-      />
+      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
       <Button title="Go back" onPress={() => navigation.goBack()} />
       <Button
         title="Go back to first screen in stack"
@@ -52,10 +54,14 @@ const Stack = createNativeStackNavigator();
 function Wrapper(): JSX.Element {
   return (
     <NavigationContainer>
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={Home} options={{ title: "Overview" }} />
-      <Stack.Screen name="Details" component={Details} />
-    </Stack.Navigator>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{title: 'Overview'}}
+        />
+        <Stack.Screen name="Details" component={Details} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
