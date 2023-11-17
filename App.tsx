@@ -1,24 +1,24 @@
 import React from 'react';
 import Analytics from 'appcenter-analytics';
 import {Button, SafeAreaView, StatusBar, StyleSheet, Text} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 import {
-  NavigationContainer,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+  NativeStackScreenProps,
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 
 type RootStackParamList = {
   Home: undefined;
   Details: {
     itemId: number;
-    otherParam: string;
+    otherParam?: string;
   };
 };
 
-function Home(): JSX.Element {
-  const navigation = useNavigation();
+type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type DetailsProps = NativeStackScreenProps<RootStackParamList, 'Details'>;
 
+function Home({navigation}: HomeProps): JSX.Element {
   const handleEvent = async () => {
     Analytics.trackEvent('make_payment', {Internet: 'Cellular', GPS: 'on'});
   };
@@ -40,10 +40,7 @@ function Home(): JSX.Element {
   );
 }
 
-function Details() {
-  const navigation = useNavigation();
-  const route = useRoute();
-
+function Details({navigation, route}: DetailsProps) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.hello}>{route.params.otherParam}</Text>
