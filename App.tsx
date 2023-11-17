@@ -1,29 +1,18 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-} from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Analytics from 'appcenter-analytics';
+import {Button, SafeAreaView, StatusBar, StyleSheet, Text} from 'react-native';
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const handleEvent = async () => {
+    Analytics.trackEvent('make_payment', {Internet: 'Cellular', GPS: 'on'});
   };
 
   return (
-    <SafeAreaView style={{...backgroundStyle, ...styles.container}}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
 
       <Text style={styles.hello}>Hello, World</Text>
+      <Button onPress={handleEvent} title="Crash" />
     </SafeAreaView>
   );
 }
