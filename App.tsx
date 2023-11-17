@@ -1,5 +1,4 @@
 import React from 'react';
-import Analytics from 'appcenter-analytics';
 import {Button, SafeAreaView, StatusBar, StyleSheet, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -19,15 +18,9 @@ type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 type DetailsProps = NativeStackScreenProps<RootStackParamList, 'Details'>;
 
 function Home({navigation}: HomeProps): JSX.Element {
-  const handleEvent = async () => {
-    Analytics.trackEvent('make_payment', {Internet: 'Cellular', GPS: 'on'});
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
       <Text style={styles.hello}>Hello, World</Text>
-      <Button onPress={handleEvent} title="Crash" />
       <Button
         title="Go to Details"
         onPress={() =>
@@ -40,25 +33,10 @@ function Home({navigation}: HomeProps): JSX.Element {
   );
 }
 
-function Details({navigation, route}: DetailsProps) {
+function Details({route}: DetailsProps) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.hello}>{route.params.otherParam}</Text>
-      <Button
-        title="Go to Details... again"
-        onPress={() =>
-          navigation.push('Details', {
-            itemId: 86,
-            otherParam: 'lorem ipsum',
-          })
-        }
-      />
-      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
-      <Button title="Go back" onPress={() => navigation.goBack()} />
-      <Button
-        title="Go back to first screen in stack"
-        onPress={() => navigation.popToTop()}
-      />
     </SafeAreaView>
   );
 }
@@ -69,16 +47,8 @@ function Wrapper(): JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{title: 'Overview'}}
-        />
-        <Stack.Screen
-          name="Details"
-          component={Details}
-          initialParams={{otherParam: 'Kiran ojha'}}
-        />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Details" component={Details} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -91,7 +61,7 @@ const styles = StyleSheet.create({
   },
   hello: {
     fontSize: 20,
-    color: 'green',
+    color: 'tomato',
     textAlign: 'center',
     margin: 10,
   },
