@@ -1,20 +1,23 @@
 import * as React from 'react';
 import {Text, View, Button} from 'react-native';
+import {UnistylesTheme} from 'react-native-unistyles';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {theme} from './common/theme';
+import {createStyleSheet, useStyles} from './common/styles';
 
-const SCREENS = Object.freeze({
+const SCREENS = {
   HOME: 'HomeScreen',
   PROFILE: 'ProfileScreen',
   SETTINGS: 'SettingsScreen',
-});
+} as const;
 
-const TABS = Object.freeze({
+const TABS = {
   HOME: 'Home',
   FEED: 'Feed',
   NOTIFICATIONS: 'Notifications',
-});
+} as const;
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -24,8 +27,9 @@ function EmptyScreen() {
 }
 
 function Home({navigation}: any) {
+  const {styles} = useStyles(stylesheet);
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={styles.container}>
       <Text>Home Screen</Text>
       <Button
         title="Go to Profile"
@@ -49,11 +53,15 @@ function Tabs() {
   );
 }
 
-function App() {
+function Root() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name={SCREENS.HOME} component={Tabs} options={{headerShown: false}} />
+        <Stack.Screen
+          name={SCREENS.HOME}
+          component={Tabs}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name={SCREENS.PROFILE} component={EmptyScreen} />
         <Stack.Screen name={SCREENS.SETTINGS} component={EmptyScreen} />
       </Stack.Navigator>
@@ -61,4 +69,22 @@ function App() {
   );
 }
 
+function App() {
+  <UnistylesTheme theme={theme}>
+    <Root />
+  </UnistylesTheme>;
+}
+
 export default App;
+
+const stylesheet = createStyleSheet(theme => ({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.background,
+  },
+  text: {
+    color: theme.colors.pumpkin,
+  },
+}));
