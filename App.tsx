@@ -1,8 +1,20 @@
 import React from 'react';
 import Analytics from 'appcenter-analytics';
 import {Button, SafeAreaView, StatusBar, StyleSheet, Text} from 'react-native';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+type RootStackParamList = {
+  Home: undefined;
+  Details: {
+    itemId: number;
+    otherParam: string;
+  };
+};
 
 function Home(): JSX.Element {
   const navigation = useNavigation();
@@ -18,7 +30,11 @@ function Home(): JSX.Element {
       <Button onPress={handleEvent} title="Crash" />
       <Button
         title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
+        onPress={() =>
+          navigation.navigate('Details', {
+            itemId: 85,
+          })
+        }
       />
     </SafeAreaView>
   );
@@ -26,10 +42,11 @@ function Home(): JSX.Element {
 
 function Details() {
   const navigation = useNavigation();
+  const route = useRoute();
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.hello}>Details Screen</Text>
+      <Text style={styles.hello}>{route.params.otherParam}</Text>
       <Button
         title="Go to Details... again"
         onPress={() =>
@@ -49,7 +66,7 @@ function Details() {
   );
 }
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function Wrapper(): JSX.Element {
   return (
@@ -60,7 +77,11 @@ function Wrapper(): JSX.Element {
           component={Home}
           options={{title: 'Overview'}}
         />
-        <Stack.Screen name="Details" component={Details} />
+        <Stack.Screen
+          name="Details"
+          component={Details}
+          initialParams={{otherParam: 'Kiran ojha'}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
